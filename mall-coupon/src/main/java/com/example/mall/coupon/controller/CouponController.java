@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,11 +26,21 @@ import com.example.common.utils.R;
  * @email hninee@163.com
  * @date 2021-12-07 21:49:13
  */
+//同步配置中心中的数据
+@RefreshScope
 @RestController
 @RequestMapping("coupon/coupon")
 public class CouponController {
     @Autowired
     private CouponService couponService;
+
+    //测试member服务远程调用order服务
+    @RequestMapping("/member/list")
+    public R memberCoupon(){
+        CouponEntity coupon = new CouponEntity();
+        coupon.setCouponName("满10减1");
+        return R.ok().put("Coupon",Arrays.asList(coupon));
+    }
 
     /**
      * 列表

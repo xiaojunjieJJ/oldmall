@@ -3,6 +3,7 @@ package com.example.mall.member.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.example.mall.member.feign.CouponFeignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,19 @@ import com.example.common.utils.R;
 public class MemberController {
     @Autowired
     private MemberService memberService;
+
+    //远程调用的接口注入
+    @Autowired
+    CouponFeignService couponFeignService;
+
+    //测试远程调用
+    @RequestMapping("/coupons")
+    public R test(){
+        MemberEntity member = new MemberEntity();
+        member.setNickname("JJ");
+        R r = couponFeignService.memberCoupon();
+        return R.ok().put("会员",member).put("优惠券",r.get("Coupon"));
+    }
 
     /**
      * 列表
