@@ -34,5 +34,7 @@ public interface AttrService extends IService<AttrEntity> {
     void updateAttr(AttrVo attr);
 
     void deleteRelation(AttrGroupRelationVo[] vos);
+
+    List<Long> selectSearchAttrIds(List<Long> attrIds);
 }
 

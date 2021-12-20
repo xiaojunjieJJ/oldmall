@@ -32,3 +32,15 @@ spring:
             - Path=/api/**
           filters:
             - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
+        - id: mall_host_route
+          uri: lb://mall-product
+          predicates:
+            - Host=jiegemall.com,item.jiegemall.com
+        - id: mall_search_route
+          uri: lb://mall-search
+          predicates:
+            - Host=search.jiegemall.com
+        - id: mall_auth_route
+          uri: lb://mall-auth-server
+          predicates:
+            - Host=auth.jiegemall.com

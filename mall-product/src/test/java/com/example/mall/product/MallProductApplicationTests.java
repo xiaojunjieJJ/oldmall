@@ -1,19 +1,27 @@
 package com.example.mall.product;
 
+import com.example.mall.product.dao.AttrGroupDao;
 import com.example.mall.product.entity.BrandEntity;
 import com.example.mall.product.service.BrandService;
 import com.example.mall.product.service.CategoryBrandRelationService;
 import com.example.mall.product.service.CategoryService;
+import com.example.mall.product.service.SkuSaleAttrValueService;
+import com.example.mall.product.vo.SkuItemSaleAttrsVo;
+import com.example.mall.product.vo.SpuItemAttrGroupVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @SpringBootTest
@@ -25,9 +33,16 @@ public class MallProductApplicationTests {
     CategoryService categoryService;
     @Autowired
     CategoryBrandRelationService relationService;
-
     @Autowired
+    StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    RedissonClient redissonClient;
+//    @Autowired
 //    OSSClient ossClient;
+    @Autowired
+    AttrGroupDao attrGroupDao;
+    @Autowired
+    SkuSaleAttrValueService saleDao;
 
     @Test
     public void contextLoads() {
@@ -50,18 +65,43 @@ public class MallProductApplicationTests {
 //        System.out.println("上传完成");
     }
 
-    @Test
-    public void testFindPath(){
-        Long[] catelogPath = categoryService.findCatelogPath(225L);
-        log.info("完整路径：{}",Arrays.asList(catelogPath));
-    }
+//    @Test
+//    public void testFindPath() {
+//        Long[] catelogPath = categoryService.findCatelogPath(225L);
+//        log.info("完整路径：{}", Arrays.asList(catelogPath));
+//    }
 
     @Test
-    public void testRelation(){
+    public void testRelation() {
         List<BrandEntity> vos = relationService.getBrandsByCatId(225L);
         for (BrandEntity vo : vos) {
             System.out.println(vo);
         }
     }
 
+    @Test
+    public void testRedis() {
+        ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
+        ops.set("hello", "world" + UUID.randomUUID().toString());
+        String hello = ops.get("hello");
+        System.out.println(hello);
+
+    }
+
+    @Test
+    public void testRedisson() {
+        System.out.println(redissonClient);
+    }
+
+    @Test
+    public void testAttr() {
+        List<SpuItemAttrGroupVo> spuId = attrGroupDao.getAttrGroupWithAttrsBySpuId(10L, 225L);
+        System.out.println(spuId);
+    }
+
+    @Test
+    public void saleDaotest(){
+        List<SkuItemSaleAttrsVo> spuId = saleDao.getSaleAttrsBySpuId(10L);
+        System.out.println(spuId);
+    }
 }
