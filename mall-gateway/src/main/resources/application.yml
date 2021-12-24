@@ -5,7 +5,13 @@ spring:
         - id: product_route
           uri: lb://mall-product
           predicates:
-            - Path=/api/product/**
+            - Path=/api/product/**,/hello
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+        - id: coupon_route
+          uri: lb://mall-coupon
+          predicates:
+            - Path=/api/coupon/**
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
         - id: third_party_route
@@ -44,3 +50,19 @@ spring:
           uri: lb://mall-auth-server
           predicates:
             - Host=auth.jiegemall.com
+        - id: mall_cart_route
+          uri: lb://mall-cart
+          predicates:
+            - Host=cart.jiegemall.com
+        - id: mall_order_route
+          uri: lb://mall-order
+          predicates:
+            - Host=order.jiegemall.com
+        - id: mall_member_route
+          uri: lb://mall-member
+          predicates:
+            - Host=member.jiegemall.com
+        - id: mall_seckill_route
+          uri: lb://mall-seckill
+          predicates:
+            - Host=seckill.jiegemall.com

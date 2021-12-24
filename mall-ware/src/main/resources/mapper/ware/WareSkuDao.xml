@@ -23,6 +23,25 @@
         FROM `wms_ware_sku`
         WHERE sku_id = #{skuId}
     </select>
+    <select id="listWareIdHasSkuStock" resultType="java.lang.Long">
+        SELECT ware_id
+        FROM `wms_ware_sku`
+        WHERE sku_id = #{skuId}
+          AND stock - IFNULL(stock_locked, 0) > 0
+    </select>
+    <update id="lockSkuStock">
+        UPDATE `wms_ware_sku`
+        SET stock_locked = IFNULL(stock_locked, 0) + #{num}
+        WHERE sku_id = #{skuId}
+          AND ware_id = #{wareId}
+          AND stock - IFNULL(stock_locked, 0) >= #{num}
+    </update>
+    <update id="unlockStock">
+        UPDATE `wms_ware_sku`
+        SET stock_locked = IFNULL(stock_locked, 0) - #{num}
+        WHERE sku_id = #{skuId}
+          AND ware_id = #{wareId}
+    </update>
 
 
 </mapper>

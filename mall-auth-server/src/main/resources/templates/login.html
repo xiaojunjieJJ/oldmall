@@ -32,6 +32,7 @@
         <div class="si_top">
             <p>
                 <span>杰哥商城不会以任何理由要求您转账汇款，谨防诈骗。</span>
+                <span style="color: red" th:if="${session.msg!=null}"></br>[[${session.msg}]]</span>
             </p>
         </div>
         <div class="si_cen">
@@ -81,18 +82,17 @@
         <div class="si_out">
             <ul>
                 <li>
-                    <a href="/static/login/#">
-                        <img src="/static/login/JD_img/qq.png"/>
-                        <span>QQ</span>
+                    <a href="https://api.weibo.com/oauth2/authorize?client_id=等待审核&response_type=code&redirect_uri=http://jiegemall.com/oauth2.0/weibo/success">
+                        <img style="width: 50px;height: 18px" src="/static/login/JD_img/weibo.png"/>
                     </a>
                 </li>
                 <li class="f4"> |</li>
-                <li>
-                    <a href="/static/login/">
-                        <img src="/static/login/JD_img/weixin.png"/>
-                        <span>微信</span>
-                    </a>
-                </li>
+                <!--                <li>-->
+                <!--                    <a href="/static/login/">-->
+                <!--                        <img src="/static/login/JD_img/weixin.png"/>-->
+                <!--                        <span>微信</span>-->
+                <!--                    </a>-->
+                <!--                </li>-->
             </ul>
             <h5 class="rig">
                 <img src="/static/login/JD_img/4de5019d2404d347897dee637895d02b_25.png"/>

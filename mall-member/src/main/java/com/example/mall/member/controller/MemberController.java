@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 import com.example.common.exception.BizCodeEnume;
+import com.example.common.to.SocialUser;
 import com.example.mall.member.feign.CouponFeignService;
 import com.example.mall.member.member.PhoneExistException;
 import com.example.mall.member.member.UserNameExistException;
@@ -115,6 +116,16 @@ public class MemberController {
     @PostMapping("/login")
     public R login(@RequestBody MemberLoginVo vo) {
         MemberEntity memberEntity = memberService.login(vo);
+        if (memberEntity != null) {
+            return R.ok().setData(memberEntity);
+        } else {
+            return R.error(BizCodeEnume.LOGINACCT_PASSWORD_INVAILD_EXCEPTION.getCode(), BizCodeEnume.LOGINACCT_PASSWORD_INVAILD_EXCEPTION.getMsg());
+        }
+    }
+
+    @PostMapping("/oauth2/login")
+    public R SocialLogin(@RequestBody SocialUser vo) throws Exception {
+        MemberEntity memberEntity = memberService.socialLogin(vo);
         if (memberEntity != null) {
             return R.ok().setData(memberEntity);
         } else {

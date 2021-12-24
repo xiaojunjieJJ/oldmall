@@ -15,4 +15,6 @@ public class SkuItemVo {
     SpuInfoDescEntity desp;
     List<SkuItemSaleAttrsVo> saleAttr;
     List<SpuItemAttrGroupVo> groupAttrs;
+    //6.当前商品的秒杀优惠信息
+    SeckillInfoVo seckillInfo;
 }

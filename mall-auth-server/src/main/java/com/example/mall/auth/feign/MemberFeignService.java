@@ -1,5 +1,6 @@
 package com.example.mall.auth.feign;
 
+import com.example.common.to.SocialUser;
 import com.example.common.utils.R;
 import com.example.mall.auth.vo.UserLoginVo;
 import com.example.mall.auth.vo.UserRegistVo;
@@ -15,4 +16,7 @@ public interface MemberFeignService {
 
     @PostMapping("/member/member/login")
     R login(@RequestBody UserLoginVo vo);
+
+    @PostMapping("/member/member/oauth2/login")
+    R SocialLogin(@RequestBody SocialUser vo) throws Exception;
 }

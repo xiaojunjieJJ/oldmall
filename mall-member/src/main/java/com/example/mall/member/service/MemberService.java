@@ -1,6 +1,7 @@
 package com.example.mall.member.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.common.to.SocialUser;
 import com.example.common.utils.PageUtils;
 import com.example.mall.member.entity.MemberEntity;
 import com.example.mall.member.member.PhoneExistException;
@@ -28,5 +29,7 @@ public interface MemberService extends IService<MemberEntity> {
     void checkUserNameUnique(String userName) throws UserNameExistException;
 
     MemberEntity login(MemberLoginVo vo);
+
+    MemberEntity socialLogin(SocialUser vo);
 }
 

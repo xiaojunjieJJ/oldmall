@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -111,6 +113,7 @@ public class LoginController {
             MemberRespVo data = r.getData(new TypeReference<MemberRespVo>() {
             });
             session.setAttribute(AuthServerConstant.LOGIN_USER, data);
+//            servletResponse.addCookie(new Cookie("JSESSIONID", "data"));
             return "redirect:http://jiegemall.com";
         } else {
             Map<String, String> errors = new HashMap<>();
@@ -118,6 +121,16 @@ public class LoginController {
             }));
             redirectAttributes.addFlashAttribute("errors", errors);
             return "redirect:http://auth.jiegemall.com/login.html";
+        }
+    }
+
+    @GetMapping("/login.html")
+    public String loginPage(HttpSession session) {
+        Object attribute = session.getAttribute(AuthServerConstant.LOGIN_USER);
+        if (attribute == null) {
+            return "login";
+        } else {
+            return "redirect:http://jiegemall.com";
         }
     }
 

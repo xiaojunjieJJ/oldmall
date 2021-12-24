@@ -34,4 +34,4 @@ server:
   port: 10001
 logging:
   level:
-    com.example.mall: error
+    com.example.mall: info
