@@ -221,18 +221,16 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         //1.查出当前spuid对应的所有sku信息,品牌的名字
         List<SkuInfoEntity> skuInfoEntities = skuInfoService.getSkusBySpuId(spuId);
         List<Long> skuIdList = skuInfoEntities.stream().map(SkuInfoEntity::getSkuId).collect(Collectors.toList());
+
         //当前sku所有可以被用来检索的规格属性
         List<ProductAttrValueEntity> baseAttrs = productAttrValueService.baseAttrListforSpu(spuId);
-        List<Long> attrIds = baseAttrs.stream().map(attr -> {
-            return attr.getAttrId();
-        }).collect(Collectors.toList());
+        List<Long> attrIds = baseAttrs.stream().map(attr -> attr.getAttrId()).collect(Collectors.toList());
+
         //当前sku所有可以被用来检索的规格属性id
         List<Long> searchAttrIds = attrService.selectSearchAttrIds(attrIds);
         //为了方便过滤
         Set<Long> idSet = new HashSet<>(searchAttrIds);
-        List<SkuEsModel.Attrs> attrsList = baseAttrs.stream().filter(item -> {
-            return idSet.contains(item.getAttrId());
-        }).map(item -> {
+        List<SkuEsModel.Attrs> attrsList = baseAttrs.stream().filter(item -> idSet.contains(item.getAttrId())).map(item -> {
             SkuEsModel.Attrs attrs1 = new SkuEsModel.Attrs();
             BeanUtils.copyProperties(item, attrs1);
             return attrs1;
@@ -264,20 +262,23 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
             }
             //热度评分(简化)
             skuEsModel.setHotScore(0L);
+            //品牌信息
             BrandEntity brandEntity = brandService.getById(skuEsModel.getBrandId());
             skuEsModel.setBrandName(brandEntity.getName());
             skuEsModel.setBrandImg(brandEntity.getLogo());
+            //分类信息
             CategoryEntity categoryEntity = categoryService.getById(skuEsModel.getCatalogId());
             skuEsModel.setCatalogName(categoryEntity.getName());
             //设置检索属性
             skuEsModel.setAttrs(attrsList);
             return skuEsModel;
         }).collect(Collectors.toList());
+
         //发送至es进行保存
         R r = searchFeignService.productStatusUp(upProducts);
         if (r.getCode() == 0) {
             //成功
-            //修改spu状态
+            //修改spu状态，上架成功
             baseMapper.updateSpuStatus(spuId, ProductConstant.StatusEnum.SPU_UP.getCode());
         } else {
             //失败

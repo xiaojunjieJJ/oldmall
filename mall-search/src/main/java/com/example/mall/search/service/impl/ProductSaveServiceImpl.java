@@ -35,16 +35,16 @@ public class ProductSaveServiceImpl implements ProductSaveService {
             //构造保存请求
             IndexRequest indexRequest = new IndexRequest(EsConstant.PRODUCT_INDEX);
             indexRequest.id(model.getSkuId().toString());
+
             String s = JSON.toJSONString(model);
             indexRequest.source(s, XContentType.JSON);
+
             bulkRequest.add(indexRequest);
         }
         BulkResponse bulk = restHighLevelClient.bulk(bulkRequest, MallElasticSearchConfig.COMMON_OPTIONS);
         boolean b = bulk.hasFailures();
-        List<String> collect = Arrays.stream(bulk.getItems()).map(item -> {
-            return item.getId();
-        }).collect(Collectors.toList());
-        log.info("商品上架完成:{},返回数据:{},",collect,bulk.toString());
+        List<String> collect = Arrays.stream(bulk.getItems()).map(item -> item.getId()).collect(Collectors.toList());
+        log.info("商品上架完成:{},返回数据:{},", collect, bulk.toString());
         return b;
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 public class MallCorsConfiguration {
 
     @Bean
-    public CorsWebFilter corsWebFilter(){
+    public CorsWebFilter corsWebFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration configuration = new CorsConfiguration();
         //配置跨域
@@ -18,7 +18,7 @@ public class MallCorsConfiguration {
         configuration.addAllowedMethod("*");
         configuration.addAllowedOrigin("*");
         configuration.setAllowCredentials(true);
-        source.registerCorsConfiguration("/**",configuration);
+        source.registerCorsConfiguration("/**", configuration);
         return new CorsWebFilter(source);
     }
 }

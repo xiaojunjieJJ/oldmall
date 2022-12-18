@@ -136,6 +136,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
             stock.setWareId(wareIds);
             return stock;
         }).collect(Collectors.toList());
+
         //锁定库存
         for (SkuWareHasStock hasStock : collect) {
             Boolean skuStocked = false;

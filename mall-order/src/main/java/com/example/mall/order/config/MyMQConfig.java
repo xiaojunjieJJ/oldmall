@@ -15,10 +15,10 @@ import java.util.Map;
 @Configuration
 public class MyMQConfig {
 
-    @Bean
-    public MessageConverter messageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
+//    @Bean
+//    public MessageConverter messageConverter() {
+//        return new Jackson2JsonMessageConverter();
+//    }
 
 
     @Bean

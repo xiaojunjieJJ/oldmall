@@ -12,7 +12,7 @@ public class SearchParamVo {
     private Long catalog3Id;
 
     /**
-     * 排序条件:
+     * 排序条件三选一：
      * 销量：saleCount_asc/desc
      * 价格: skuPrice_asc/desc
      * 热度评分: hotScore_asc/desc

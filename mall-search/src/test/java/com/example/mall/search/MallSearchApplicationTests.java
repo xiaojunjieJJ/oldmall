@@ -10,7 +10,12 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +36,7 @@ public class MallSearchApplicationTests {
         System.out.println(client);
     }
 
+    //聚合查询
     @Test
     public void searchData() throws IOException {
         SearchRequest request = new SearchRequest();
@@ -48,10 +54,16 @@ public class MallSearchApplicationTests {
         SearchResponse response = client.search(request, MallElasticSearchConfig.COMMON_OPTIONS);
 
         System.out.println(response.toString());
+        Aggregations aggregations = response.getAggregations();
+        Terms ageAgg = aggregations.get("ageAgg");
+        for (Terms.Bucket bucket : ageAgg.getBuckets()) {
+            String string = bucket.getKeyAsString();
+            System.out.println("年龄" + string);
+        }
 
     }
 
-    //增
+    //新增索引
     @Test
     public void indeData() throws IOException {
         IndexRequest users = new IndexRequest("users");

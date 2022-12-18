@@ -21,6 +21,7 @@ public class SearchResult {
     private List<BrandVo> brands;//品牌信息
     private List<AttrVo> attrs;//属性信息
     private List<CatalogVo> catalogs;//分类信息
+
     private List<NavVo> navs = new ArrayList<>();
     private List<Long> attrIds = new ArrayList<>();
 
